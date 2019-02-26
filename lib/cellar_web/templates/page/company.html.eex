@@ -1,0 +1,32 @@
+<script>
+$(document).ready(function () {
+  $('#cellarTable').DataTable({paging: false});
+});
+</script>
+
+<section class="phx-hero">
+  <h1>Welcome to the Cellar</h1>
+</section>
+
+<table id="cellarTable">
+  <thead>
+    <tr>
+      <th>Company</th>
+      <th>Name</th>
+      <th>Vintage</th>
+      <th>Quantity</th>
+      <th>Box</th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for entry <- @cellar do %>
+  <tr>
+    <td><%= entry.company %></td>
+    <td><%= entry.name %></td>
+    <td><%= entry.vintage %></td>
+    <td><%= entry.quantity %></td>
+    <td><%= entry.box_number %></td>
+  </tr>
+<% end %>
+  </tbody>
+</table>
