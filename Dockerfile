@@ -22,7 +22,6 @@ COPY . /app
 WORKDIR /app
 
 # Install Elixir Dependencies
-RUN npm install
 RUN mix deps.clean --all
 RUN mix deps.get --only prod
 
