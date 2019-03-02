@@ -14,7 +14,9 @@ config :cellar, CellarWeb.Endpoint,
   render_errors: [view: CellarWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Cellar.PubSub, adapter: Phoenix.PubSub.PG2]
 
-config :cellar, Cellar, source_file: "/data/cellar.csv"
+config :cellar, Cellar,
+  source_file: "/data/cellar.csv",
+  name: "Hez's Cellar"
 
 # Configures Elixir's Logger
 config :logger, :console,
