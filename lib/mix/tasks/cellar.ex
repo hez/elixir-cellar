@@ -3,6 +3,8 @@ defmodule Mix.Tasks.Cellar do
 
   alias Cellar.Parser.CSV
 
+  @box_size 12
+
   def run(args) do
     [cellar_file | commands] = args
 
@@ -20,6 +22,7 @@ defmodule Mix.Tasks.Cellar do
     ------------------
     breweries - displays list of breweries the boxes they are in and how many bottles.
     box # - displays contents of box #
+    box vacancies - displays number of empty slots in box and what breweries are in that box.
 
     Examples
     --------
@@ -48,6 +51,25 @@ defmodule Mix.Tasks.Cellar do
     end)
   end
 
+  def exec(parsed, ["box", "vacancies"]) do
+    IO.puts "Box vacancies"
+    IO.puts "box - vacancy"
+    IO.puts "-------------"
+
+    parsed
+    |> Enum.map_reduce(%{}, fn %{box_number: box, quantity: quantity}, acc ->
+      {quantity, Map.put(acc, box, Map.get(acc, box, 0) + quantity)}
+    end)
+    |> Tuple.to_list()
+    |> List.last()
+    |> Enum.sort(fn {_, xfree}, {_, yfree} -> xfree < yfree end)
+    |> Enum.filter(&(elem(&1, 1) < @box_size))
+    |> Enum.each(fn {box, count} ->
+      IO.puts "#{box} - #{@box_size - count}"
+      IO.puts "\t#{parsed |> box_company_list(box) |> Enum.join("\n\t")}"
+    end)
+  end
+
   def exec(parsed, ["box", box_num]) do
     parsed
     |> Enum.filter(fn %{box_number: box} -> box == String.to_integer(box_num) end)
@@ -72,6 +94,13 @@ defmodule Mix.Tasks.Cellar do
     end)
     |> Tuple.to_list()
     |> List.last()
+  end
+
+  defp box_company_list(cellar, box) do
+    cellar
+    |> Enum.filter(&(&1.box_number == box))
+    |> Enum.map(&(&1.company))
+    |> Enum.uniq()
   end
 
   defp sort_companies_box_list(companies) do
