@@ -21,6 +21,8 @@ config :cellar, CellarWeb.Endpoint,
     ]
   ]
 
+config :cellar, Cellar, source_file: "./cellar.csv"
+
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed
