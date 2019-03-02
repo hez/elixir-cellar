@@ -24,6 +24,7 @@ defmodule CellarWeb do
       import Plug.Conn
       import CellarWeb.Gettext
       alias CellarWeb.Router.Helpers, as: Routes
+      alias CellarWeb.Helpers
     end
   end
 
@@ -42,6 +43,7 @@ defmodule CellarWeb do
       import CellarWeb.ErrorHelpers
       import CellarWeb.Gettext
       alias CellarWeb.Router.Helpers, as: Routes
+      alias CellarWeb.Helpers
     end
   end
 
