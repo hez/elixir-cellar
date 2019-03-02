@@ -1,6 +1,8 @@
 defmodule CellarWeb.PageController do
   use CellarWeb, :controller
 
+  def about(conn, _params), do: render(conn, "about.html")
+
   def index(conn, _params) do
     render(conn, "index.html", cellar: Cellar.get_cellar())
   end
