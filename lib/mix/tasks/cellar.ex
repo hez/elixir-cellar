@@ -1,22 +1,18 @@
 defmodule Mix.Tasks.Cellar do
   use Mix.Task
 
-  alias Cellar.Parser.CSV
-
   @box_size 12
 
   def run(args) do
-    [cellar_file | commands] = args
-
-    cellar_file
-    |> optionally_display_help()
-    |> CSV.parse()
-    |> exec(commands)
+    optionally_display_help(args)
+    exec(Cellar.get_cellar(), args)
   end
 
-  def optionally_display_help("help") do
+  def optionally_display_help(["help"]) do
     IO.puts("
     Cellar utilities
+
+    Usage: mix cellar <command>
 
     Available commands
     ------------------
@@ -26,8 +22,8 @@ defmodule Mix.Tasks.Cellar do
 
     Examples
     --------
-    mix cellar file.csv box 8
-    mix cellar file.csv breweries
+    mix cellar box 8
+    mix cellar breweries
     ")
     exit(:normal)
   end
@@ -52,9 +48,9 @@ defmodule Mix.Tasks.Cellar do
   end
 
   def exec(parsed, ["box", "vacancies"]) do
-    IO.puts "Box vacancies"
-    IO.puts "box - vacancy"
-    IO.puts "-------------"
+    IO.puts("Box vacancies")
+    IO.puts("box - vacancy")
+    IO.puts("-------------")
 
     parsed
     |> Enum.map_reduce(%{}, fn %{box_number: box, quantity: quantity}, acc ->
@@ -65,8 +61,12 @@ defmodule Mix.Tasks.Cellar do
     |> Enum.sort(fn {_, xfree}, {_, yfree} -> xfree < yfree end)
     |> Enum.filter(&(elem(&1, 1) < @box_size))
     |> Enum.each(fn {box, count} ->
-      IO.puts "#{box} - #{@box_size - count}"
-      IO.puts "\t#{parsed |> box_company_list(box) |> Enum.join("\n\t")}"
+      IO.puts(
+        "#{String.pad_leading(Integer.to_string(box), 3)} - " <>
+          box_available_colour(@box_size - count) <> "#{@box_size - count}" <> IO.ANSI.reset()
+      )
+
+      IO.puts("\t#{parsed |> box_company_list(box) |> Enum.map(&("#{elem(&1, 0)}: #{elem(&1, 1)}")) |> Enum.join("\n\t")}")
     end)
   end
 
@@ -77,6 +77,10 @@ defmodule Mix.Tasks.Cellar do
       IO.puts("#{entry.quantity}\t#{entry.company} - #{entry.name}")
     end)
   end
+
+  defp box_available_colour(available_count) when available_count > 3, do: IO.ANSI.light_red()
+  defp box_available_colour(1), do: IO.ANSI.green()
+  defp box_available_colour(available_count), do: IO.ANSI.yellow()
 
   defp company_box_list(cellar) do
     cellar
@@ -99,8 +103,10 @@ defmodule Mix.Tasks.Cellar do
   defp box_company_list(cellar, box) do
     cellar
     |> Enum.filter(&(&1.box_number == box))
-    |> Enum.map(&(&1.company))
-    |> Enum.uniq()
+    |> Enum.map(& {&1.company, &1.quantity})
+    |> Enum.reduce(%{}, fn {brewery, quantity}, acc ->
+      Map.put(acc, brewery, Map.get(acc, brewery, 0) + quantity)
+    end)
   end
 
   defp sort_companies_box_list(companies) do
