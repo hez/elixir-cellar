@@ -32,7 +32,7 @@ defmodule Cellar.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:csv, "~> 2.0.0"},
+      {:csv, "~> 2.3.1"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:phoenix, "~> 1.4.0"},
