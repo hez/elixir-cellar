@@ -1,4 +1,4 @@
-FROM elixir:1.8.1-slim
+FROM elixir:1.10.0-slim
 
 # Allow builds to occur for different mix environments, default to dev.
 ARG environment=prod
@@ -13,7 +13,7 @@ RUN apt-get update
 RUN apt-get install -y -q bash curl gpg
 
 # Install node
-RUN curl -sL https://deb.nodesource.com/setup_9.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
 RUN apt-get install -y -q inotify-tools nodejs
 
 # Create folder for Application to live
