@@ -66,7 +66,14 @@ defmodule Mix.Tasks.Cellar do
           box_available_colour(@box_size - count) <> "#{@box_size - count}" <> IO.ANSI.reset()
       )
 
-      IO.puts("\t#{parsed |> box_company_list(box) |> Enum.map(&("#{elem(&1, 0)}: #{elem(&1, 1)}")) |> Enum.join("\n\t")}")
+      IO.puts(
+        "\t#{
+          parsed
+          |> box_company_list(box)
+          |> Enum.map(&"#{elem(&1, 0)}: #{elem(&1, 1)}")
+          |> Enum.join("\n\t")
+        }"
+      )
     end)
   end
 
@@ -80,7 +87,7 @@ defmodule Mix.Tasks.Cellar do
 
   defp box_available_colour(available_count) when available_count > 3, do: IO.ANSI.light_red()
   defp box_available_colour(1), do: IO.ANSI.green()
-  defp box_available_colour(available_count), do: IO.ANSI.yellow()
+  defp box_available_colour(_available_count), do: IO.ANSI.yellow()
 
   defp company_box_list(cellar) do
     cellar
@@ -103,7 +110,7 @@ defmodule Mix.Tasks.Cellar do
   defp box_company_list(cellar, box) do
     cellar
     |> Enum.filter(&(&1.box_number == box))
-    |> Enum.map(& {&1.company, &1.quantity})
+    |> Enum.map(&{&1.company, &1.quantity})
     |> Enum.reduce(%{}, fn {brewery, quantity}, acc ->
       Map.put(acc, brewery, Map.get(acc, brewery, 0) + quantity)
     end)
