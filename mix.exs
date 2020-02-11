@@ -9,6 +9,11 @@ defmodule Cellar.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
+      dialyzer: [
+        plt_add_deps: :transitive,
+        plt_add_apps: [:mix],
+        plt_file: {:no_warn, "priv/plts/dialyzer.plt"}
+      ],
       deps: deps()
     ]
   end
@@ -32,12 +37,16 @@ defmodule Cellar.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      # Test and Dev
+      {:credo, "~> 1.2.0", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.0.0-rc.4", only: :dev, runtime: false},
+      {:phoenix_live_reload, "~> 1.2", only: :dev},
+      # All
       {:csv, "~> 2.3.1"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:phoenix, "~> 1.4.0"},
       {:phoenix_html, "~> 2.11"},
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_pubsub, "~> 1.1"},
       {:plug_cowboy, "~> 2.0"}
     ]

@@ -9,7 +9,7 @@ defmodule Cellar do
 
   alias Cellar.Parser.CSV
 
-  def get_cellar(), do: CSV.parse(cellar_file())
+  def get_cellar, do: CSV.parse(cellar_file())
 
   defp cellar_file, do: :cellar |> Application.get_env(Cellar) |> Keyword.get(:source_file)
 end
