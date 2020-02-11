@@ -1,31 +1,48 @@
-FROM elixir:1.8.1-slim
+FROM elixir:1.10.0-alpine as build
 
-# Allow builds to occur for different mix environments, default to dev.
-ARG environment=prod
-ENV MIX_ENV=${environment}
+# install build dependencies
+RUN apk add --update git build-base nodejs yarn python
 
-# Install Hex and Phoenix
-RUN mix local.hex --force
-RUN mix local.rebar --force
-
-# install curl and bash
-RUN apt-get update
-RUN apt-get install -y -q bash curl gpg
-
-# Install node
-RUN curl -sL https://deb.nodesource.com/setup_9.x | bash -
-RUN apt-get install -y -q inotify-tools nodejs
-
-# Create folder for Application to live
+# prepare build dir
 RUN mkdir /app
-COPY . /app
 WORKDIR /app
 
-# Install Elixir Dependencies
-RUN mix deps.clean --all
-RUN mix deps.get --only prod
+# install hex + rebar
+RUN mix local.hex --force && \
+    mix local.rebar --force
 
-RUN cd assets && npm install && cd ..
-RUN cd assets && npx webpack --mode production && cd ..
-RUN mix compile
+# set build ENV
+ENV MIX_ENV=prod
+
+# install mix dependencies
+COPY mix.exs mix.lock ./
+COPY config config
+RUN mix deps.get
+RUN mix deps.compile
+
+# build assets
+COPY assets assets
+COPY priv priv
+RUN cd assets && yarn install && yarn run deploy
 RUN mix phx.digest
+
+# build project
+COPY lib lib
+RUN mix compile
+
+# build release (uncomment COPY if rel/ exists)
+# COPY rel rel
+RUN mix release
+
+# prepare release image
+FROM alpine:3.9 AS app
+RUN apk add --update bash openssl
+
+RUN mkdir /app
+WORKDIR /app
+
+COPY --from=build /app/_build/prod/rel/cellar ./
+RUN chown -R nobody: /app
+USER nobody
+
+ENV HOME=/app

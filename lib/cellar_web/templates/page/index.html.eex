@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     <td><a href="<%= Routes.page_path(@conn, :company, company: entry.company) %>"><%= entry.company %></a></td>
     <td><%= entry.name %></td>
     <td><%= entry.vintage %></td>
-    <td><%= entry.quantity %></td>
+    <td class="dt-right"><%= entry.quantity %></td>
     <td><%= entry.box_number %></td>
   </tr>
 <% end %>

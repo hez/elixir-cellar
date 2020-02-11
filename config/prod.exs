@@ -19,8 +19,7 @@ config :cellar, CellarWeb.Endpoint, secret_key_base: System.get_env("SECRET_KEY_
 # Do not print debug messages in production
 config :logger, level: :info
 
-config :cellar, Cellar,
-  source_file: "/data/cellar.csv"
+config :cellar, Cellar, source_file: "/data/cellar.csv"
 
 # ## SSL Support
 #
