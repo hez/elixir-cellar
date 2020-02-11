@@ -1,0 +1,12 @@
+version: '3.2'
+services:
+  app:
+    image: "hezr/cellar"
+    #build: "."
+    volumes:
+      - .:/data/
+    ports:
+      - "4001:4000"
+    command: "bin/cellar start"
+    environment:
+      SECRET_KEY_BASE: test
