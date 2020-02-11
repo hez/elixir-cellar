@@ -1,0 +1,31 @@
+on: push
+name: Continuous Integration
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    env:
+      MIX_ENV: test
+    steps:
+      - uses: actions/checkout@v1.0.0
+
+      - name: Cache dialyzer plts
+        uses: actions/cache@v1
+        with:
+          path: priv/plts
+          key: ${{ runner.os }}-node
+
+      - uses: actions/setup-elixir@v1.0.0
+        with:
+          otp-version: 22.2
+          elixir-version: 1.10.0
+      - name: Deps get
+        run: mix deps.get
+      - name: Check Credo
+        run: mix credo
+      - name: Check Formatting
+        run: mix format --check-formatted
+      - name: Compile with warnings
+        run: mix do compile --warnings-as-errors
+      - name: Dialyzer
+        run: MIX_ENV=dev mix dialyzer --halt-exit-status
