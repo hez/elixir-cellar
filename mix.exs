@@ -40,7 +40,7 @@ defmodule Cellar.MixProject do
   defp deps do
     [
       # Test and Dev
-      {:credo, "~> 1.3.0", only: [:dev, :test], runtime: false},
+      {:credo, "~> 1.4.0", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0.0-rc.4", only: :dev, runtime: false},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       # All
