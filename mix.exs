@@ -47,10 +47,10 @@ defmodule Cellar.MixProject do
       {:csv, "~> 2.3.1"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:phoenix, "~> 1.4.0"},
+      {:phoenix, "~> 1.5.0"},
       {:phoenix_html, "~> 2.11"},
-      {:phoenix_pubsub, "~> 1.1"},
-      {:plug_cowboy, "~> 2.0"}
+      {:phoenix_pubsub, "~> 2.0"},
+      {:plug_cowboy, "~> 2.1"}
     ]
   end
 end

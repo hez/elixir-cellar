@@ -8,6 +8,8 @@ defmodule Cellar.Application do
   def start(_type, _args) do
     # List all child processes to be supervised
     children = [
+      # Start the PubSub system
+      {Phoenix.PubSub, name: Cellar.PubSub},
       # Start the endpoint when the application starts
       CellarWeb.Endpoint
       # Starts a worker by calling: Cellar.Worker.start_link(arg)

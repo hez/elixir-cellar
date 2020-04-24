@@ -12,7 +12,7 @@ config :cellar, CellarWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "GvRPOtR3hpOi9HgojG7B7gjlrUDpDEnLgqI7Yw3AdVKqbhBLjjsNju7mvpqkPpF7",
   render_errors: [view: CellarWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Cellar.PubSub, adapter: Phoenix.PubSub.PG2]
+  pubsub_server: Cellar.PubSub
 
 config :cellar, Cellar,
   source_file: "/data/cellar.csv",
