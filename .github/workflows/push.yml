@@ -4,6 +4,11 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        otp: [22.3]
+        elixir: [1.10.2]
+
     env:
       MIX_ENV: test
     steps:
@@ -13,12 +18,12 @@ jobs:
         uses: actions/cache@v1
         with:
           path: priv/plts
-          key: ${{ runner.os }}-node
+          key: ${{runner.os}}-${{matrix.otp}}-${{matrix.elixir}}-plts
 
       - uses: actions/setup-elixir@v1.0.0
         with:
-          otp-version: 22.2
-          elixir-version: 1.10.0
+          otp-version: ${{matrix.otp}}
+          elixir-version: ${{matrix.elixir}}
       - name: Deps get
         run: mix deps.get
       - name: Check Credo
@@ -28,7 +33,7 @@ jobs:
       - name: Compile with warnings
         run: mix do compile --warnings-as-errors
       - name: Dialyzer
-        run: MIX_ENV=dev mix dialyzer --halt-exit-status
+        run: MIX_ENV=dev mix dialyzer
       - name: Set env.HEAD_TAG
         run: |
           echo "::set-env name=HEAD_TAG::$(git tag --points-at HEAD)"
