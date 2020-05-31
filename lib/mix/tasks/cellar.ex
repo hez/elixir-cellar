@@ -78,11 +78,10 @@ defmodule Mix.Tasks.Cellar do
   end
 
   def exec(parsed, ["box", box_num]) do
-    parsed
-    |> Enum.filter(fn %{box_number: box} -> box == String.to_integer(box_num) end)
-    |> Enum.each(fn entry ->
-      IO.puts("#{entry.quantity}\t#{entry.company} - #{entry.name}")
-    end)
+    beers = Enum.filter(parsed, fn %{box_number: box} -> box == String.to_integer(box_num) end)
+    Enum.each(beers, &IO.puts("#{&1.quantity}\t#{&1.company} - #{&1.name} (#{&1.vintage})"))
+    IO.puts("----")
+    IO.puts("#{Enum.reduce(beers, 0, &(&1.quantity + &2))}")
   end
 
   defp box_available_colour(available_count) when available_count > 3, do: IO.ANSI.light_red()
