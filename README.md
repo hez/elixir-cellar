@@ -5,7 +5,7 @@
   * Install `asdf`
   * in project directory `asdf install`
   * install dependancies `mix deps.get`
-  * run help `mix cellar help`
+  * run help `mix help cellar.<cmd>`
 
 
 To start your Phoenix server:
