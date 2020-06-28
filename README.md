@@ -6,6 +6,7 @@
   * in project directory `asdf install`
   * install dependancies `mix deps.get`
   * run help `mix help cellar.<cmd>`
+  * copy `example_cellar.csv` to `cellar.csv` and edit
 
 
 To start your Phoenix server:
