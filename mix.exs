@@ -44,7 +44,7 @@ defmodule Cellar.MixProject do
       {:dialyxir, "~> 1.0.0-rc.4", only: :dev, runtime: false},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       # All
-      {:csv, "~> 2.3.1"},
+      {:csv, "~> 2.4.1"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:phoenix, "~> 1.5.0"},
