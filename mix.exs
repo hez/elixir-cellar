@@ -7,13 +7,12 @@ defmodule Cellar.MixProject do
     [
       app: :cellar,
       version: @version,
-      elixir: "~> 1.5",
+      elixir: "~> 1.10",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       dialyzer: [
-        plt_add_deps: :transitive,
-        plt_add_apps: [:mix],
+        plt_add_apps: [:mix, :ex_unit],
         plt_file: {:no_warn, "priv/plts/dialyzer.plt"}
       ],
       deps: deps()
@@ -41,7 +40,7 @@ defmodule Cellar.MixProject do
     [
       # Test and Dev
       {:credo, "~> 1.5.0", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.0.0-rc.4", only: :dev, runtime: false},
+      {:dialyxir, "~> 1.0.0", only: [:dev, :test], runtime: false},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       # All
       {:csv, "~> 2.4.1"},
