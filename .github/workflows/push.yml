@@ -6,21 +6,21 @@ jobs:
 
     strategy:
       matrix:
-        otp: [22.3]
-        elixir: [1.10.2]
+        otp: [23.1.1]
+        elixir: [1.11.2]
 
     env:
       MIX_ENV: test
     steps:
-      - uses: actions/checkout@v1.0.0
+      - uses: actions/checkout@v2
 
       - name: Cache dialyzer plts
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: priv/plts
           key: ${{runner.os}}-${{matrix.otp}}-${{matrix.elixir}}-plts
 
-      - uses: actions/setup-elixir@v1.0.0
+      - uses: actions/setup-elixir@v1
         with:
           otp-version: ${{matrix.otp}}
           elixir-version: ${{matrix.elixir}}
