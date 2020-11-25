@@ -1,7 +1,7 @@
 FROM elixir:1.11.1-alpine as build
 
 # install build dependencies
-RUN apk add --update git build-base nodejs yarn python
+RUN apk add --update git build-base nodejs yarn
 
 # prepare build dir
 RUN mkdir /app
