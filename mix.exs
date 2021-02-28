@@ -40,7 +40,7 @@ defmodule Cellar.MixProject do
     [
       # Test and Dev
       {:credo, "~> 1.5.0", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.0.0", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.1.0", only: [:dev, :test], runtime: false},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       # All
       {:csv, "~> 2.4.1"},
