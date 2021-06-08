@@ -1,7 +1,7 @@
 FROM elixir:1.12.1-alpine as build
 
 # install build dependencies
-RUN apk add --update git build-base nodejs npm
+RUN apk add --no-cache git build-base nodejs npm
 
 # prepare build dir
 RUN mkdir /app
@@ -21,9 +21,12 @@ RUN mix deps.get
 RUN mix deps.compile
 
 # build assets
-COPY assets assets
+COPY assets/package.json assets/package-lock.json ./assets/
+RUN npm --prefix ./assets ci --progress=false --no-audit --loglevel=error
+
 COPY priv priv
-RUN cd assets && npm install && npm run deploy
+COPY assets assets
+RUN npm run --prefix ./assets deploy
 RUN mix phx.digest
 
 # build project
@@ -36,13 +39,15 @@ RUN mix release
 
 # prepare release image
 FROM alpine:3.9 AS app
-RUN apk add --update bash openssl
+RUN apk add --no-cache bash openssl ncurses-libs
+RUN apk add --no-cache libstdc++
 
-RUN mkdir /app
 WORKDIR /app
 
-COPY --from=build /app/_build/prod/rel/cellar ./
-RUN chown -R nobody: /app
-USER nobody
+RUN chown nobody:nobody /app
+
+USER nobody:nobody
+
+COPY --from=build --chown=nobody:nobody /app/_build/prod/rel/cellar ./
 
 ENV HOME=/app
