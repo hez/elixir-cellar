@@ -35,17 +35,3 @@ jobs:
         run: mix do compile --warnings-as-errors
       - name: Dialyzer
         run: mix dialyzer
-      - name: Set env.HEAD_TAG
-        run: |
-          echo "head_tag=$(git tag --points-at HEAD)" >> $GITHUB_ENV
-      - name: Push Docker Images if New Tag ${{ env.head_tag }}
-        if: env.head_tag != ''
-        run: |
-          echo "$DOCKER_PASSWORD" | docker login docker.pkg.github.com -u $DOCKER_USERNAME --password-stdin
-          docker build -f Dockerfile \
-                       -t docker.pkg.github.com/hez/elixir-cellar/elixir-cellar:$head_tag \
-                       .
-          docker push docker.pkg.github.com/hez/elixir-cellar/elixir-cellar:$head_tag
-        env:
-          DOCKER_USERNAME: ${{ github.actor }}
-          DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
