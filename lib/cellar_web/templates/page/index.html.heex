@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   <tbody>
 <%= for entry <- @cellar do %>
   <tr>
-    <td><a href="<%= Routes.page_path(@conn, :company, company: entry.company) %>"><%= entry.company %></a></td>
+    <td><a href={Routes.page_path(@conn, :company, company: entry.company)}><%= entry.company %></a></td>
     <td><%= entry.name %></td>
     <td><%= entry.vintage %></td>
     <td class="dt-right"><%= entry.quantity %></td>

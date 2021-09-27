@@ -15,6 +15,7 @@ defmodule Cellar.MixProject do
         plt_add_apps: [:mix, :ex_unit],
         plt_file: {:no_warn, "priv/plts/dialyzer.plt"}
       ],
+      aliases: aliases(),
       deps: deps()
     ]
   end
@@ -43,13 +44,22 @@ defmodule Cellar.MixProject do
       {:dialyxir, "~> 1.1.0", only: [:dev, :test], runtime: false},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       # All
+      {:esbuild, "~> 0.2", runtime: Mix.env() == :dev},
       {:csv, "~> 2.4.1"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:phoenix, "~> 1.5.0"},
+      {:phoenix, "~> 1.6"},
       {:phoenix_html, "~> 3.0"},
+      {:phoenix_live_view, "~> 0.16.4"},
       {:phoenix_pubsub, "~> 2.0"},
       {:plug_cowboy, "~> 2.1"}
+    ]
+  end
+
+  defp aliases do
+    [
+      setup: ["deps.get"],
+      "assets.deploy": ["esbuild default --minify", "phx.digest"]
     ]
   end
 end
