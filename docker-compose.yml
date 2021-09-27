@@ -7,6 +7,5 @@ services:
       - .:/data/
     ports:
       - "4001:4000"
-    command: "bin/cellar start"
     environment:
       SECRET_KEY_BASE: test
