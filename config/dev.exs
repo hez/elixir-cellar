@@ -11,8 +11,10 @@ config :cellar, CellarWeb.Endpoint,
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
-  # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
-  esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
+  watchers: [
+    # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
+    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
+  ]
 
 config :cellar, Cellar, source_file: "./cellar.csv"
 
