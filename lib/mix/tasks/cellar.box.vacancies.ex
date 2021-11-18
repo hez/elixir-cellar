@@ -32,7 +32,7 @@ defmodule Mix.Tasks.Cellar.Vacancies do
       )
 
       IO.puts(
-        "\t#{parsed |> box_company_list(box) |> Enum.map(&"#{elem(&1, 0)}: #{elem(&1, 1)}") |> Enum.join("\n\t")}"
+        "\t#{parsed |> box_company_list(box) |> Enum.map_join("\n\t", &"#{elem(&1, 0)}: #{elem(&1, 1)}")}"
       )
     end)
   end

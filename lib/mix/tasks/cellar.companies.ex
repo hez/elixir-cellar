@@ -17,8 +17,7 @@ defmodule Mix.Tasks.Cellar.Companies do
       pretty_cases =
         cases
         |> Enum.sort(fn {_, x}, {_, y} -> x > y end)
-        |> Enum.map(&"#{elem(&1, 0)}: #{elem(&1, 1)}")
-        |> Enum.join("\n\t")
+        |> Enum.map_join("\n\t", &"#{elem(&1, 0)}: #{elem(&1, 1)}")
 
       IO.puts("#{brewery} \n\t#{pretty_cases}")
     end)
