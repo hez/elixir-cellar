@@ -1,6 +1,6 @@
 ARG MIX_ENV="prod"
 
-FROM elixir:1.12.3-alpine as build
+FROM elixir:1.13.1-alpine as build
 
 # install build dependencies
 RUN apk add --no-cache build-base git python3 curl

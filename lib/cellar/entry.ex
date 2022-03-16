@@ -1,4 +1,5 @@
 defmodule Cellar.Entry do
+  @moduledoc false
   defstruct company: "",
             name: "",
             style: "",

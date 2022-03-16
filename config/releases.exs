@@ -1,7 +1,5 @@
 import Config
 
-IO.inspect("in release")
-
 secret_key_base =
   System.get_env("SECRET_KEY_BASE") ||
     raise """
@@ -9,16 +7,10 @@ secret_key_base =
     You can generate one by calling: mix phx.gen.secret
     """
 
-config :cellar, VanPiWeb.Endpoint,
+config :cellar, CellarWeb.Endpoint,
   http: [
-    port: String.to_integer(System.get_env("PORT") || "4000"),
-    transport_options: [socket_opts: [:inet6]]
+    port: String.to_integer(System.get_env("PORT") || "4000")
   ],
   secret_key_base: secret_key_base
 
-# ## Using releases (Elixir v1.9+)
-#
-# If you are doing OTP releases, you need to instruct Phoenix
-# to start each relevant endpoint:
-#
 config :cellar, CellarWeb.Endpoint, server: true

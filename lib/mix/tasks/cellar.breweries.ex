@@ -1,4 +1,5 @@
 defmodule Mix.Tasks.Cellar.Breweries do
+  @moduledoc false
   use Mix.Task
   alias Mix.Tasks.Cellar.Companies
 
