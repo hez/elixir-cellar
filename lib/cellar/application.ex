@@ -5,15 +5,17 @@ defmodule Cellar.Application do
 
   use Application
 
+  @impl true
   def start(_type, _args) do
-    # List all child processes to be supervised
     children = [
+      # Start the Telemetry supervisor
+      CellarWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: Cellar.PubSub},
-      # Start the endpoint when the application starts
+      # Start the Endpoint (http/https)
       CellarWeb.Endpoint
-      # Starts a worker by calling: Cellar.Worker.start_link(arg)
-      # {Cellar.Worker, arg},
+      # Start a worker by calling: Cellar.Worker.start_link(arg)
+      # {Cellar.Worker, arg}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
@@ -24,6 +26,7 @@ defmodule Cellar.Application do
 
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.
+  @impl true
   def config_change(changed, _new, removed) do
     CellarWeb.Endpoint.config_change(changed, removed)
     :ok
